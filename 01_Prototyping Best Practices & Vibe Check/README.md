@@ -1,4 +1,4 @@
-<p align = "center" draggable=”false” ><img src="https://github.com/AI-Maker-Space/LLM-Dev-101/assets/37101144/d1343317-fa2f-41e1-8af1-1dbb18399719" 
+<p align = "center" draggable=”false” ><img src="https://github.com/AI-Maker-Space/LLM-Dev-101/assets/37101144/d1343317-fa2f-41e1-8af1-1dbb18399719"
      width="200px"
      height="auto"/>
 </p>
@@ -24,7 +24,7 @@ Each assignment will have a few of the following categories of exercises:
 
 ### Main Assignment
 
-In the following assignment, you are required to take the app that you created for the AIE8 challenge (from [this repository](https://github.com/AI-Maker-Space/The-AI-Engineer-Challenge)) and conduct what is known, colloquially, as a "vibe check" on the application. 
+In the following assignment, you are required to take the app that you created for the AIE8 challenge (from [this repository](https://github.com/AI-Maker-Space/The-AI-Engineer-Challenge)) and conduct what is known, colloquially, as a "vibe check" on the application.
 
 You will be required to submit a link to your GitHub, as well as screenshots of the completed "vibe checks" through the provided Google Form!
 
@@ -33,18 +33,45 @@ You will be required to submit a link to your GitHub, as well as screenshots of 
 
 #### 🏗️ Activity #1:
 
+<span style="color:red">Arnab: My AI engineering challenge app</span> [My Recipe Generator](https://arnab-ai-challenge-problem.vercel.app/)
+<span style="color:red">
+will need substantially different vibe check questions than the ones provided here (which are more for chatbot type apps). I will use N/A for the provided questions and instead list out 5 different questions that vibe checks different aspects of my app.
+</span>
+
 Please evaluate your system on the following questions:
 
-1. Explain the concept of object-oriented programming in simple terms to a complete beginner. 
-    - Aspect Tested:
+1. Explain the concept of object-oriented programming in simple terms to a complete beginner.
+    - Aspect Tested: <span style="color:red"> N/A </span>
 2. Read the following paragraph and provide a concise summary of the key points…
-    - Aspect Tested:
+    - Aspect Tested:<span style="color:red"> N/A </span>
 3. Write a short, imaginative story (100–150 words) about a robot finding friendship in an unexpected place.
-    - Aspect Tested:
+    - Aspect Tested:<span style="color:red"> N/A </span>
 4. If a store sells apples in packs of 4 and oranges in packs of 3, how many packs of each do I need to buy to get exactly 12 apples and 9 oranges?
-    - Aspect Tested:
+    - Aspect Tested:<span style="color:red"> N/A </span>
 5. Rewrite the following paragraph in a professional, formal tone…
-    - Aspect Tested:
+    - Aspect Tested:<span style="color:red"> N/A </span>
+
+<span style="color:red"> List of my vibe-check questions: </span>
+
+6. Generate a recipe using only "chicken, salt, pepper, oil" as ingredients for 4 people in 15 minutes with no dietary restrictions.
+
+    - Aspect Tested: *Ingredient limitation handling and creative recipe generation with minimal ingredients.* In snapshot 1, you will see that only these basic ingredients are used generated recipe.
+
+7. Generate a recipe using "rice, vegetables, soy sauce" for 2 people in 30 minutes, Chinese cuisine, vegetarian.
+
+    - Aspect Tested: *Time constraint compliance and realistic cooking time estimation.* In snapshot 2, you will see that the total cooking time is constrained to be within 30 mins as requested by user.
+
+8. Generate a recipe using "beef, brie, bread" for 6 people in 45 minutes, American cuisine, with "Vegan" and "Gluten-Free" dietary restrictions.
+
+    - Aspect Tested: *Dietary restriction adherence and ingredient substitution logic.* Here user is asking for vegan and gluten free replacements that are similar to beef, brie cheese and bread. The LLM correctly comes up with options (see snapshot 3) that adheres to the dietary restrictions (using seitan strips with beef texture, vegan brie cheese that is chashew based, and chicpea crusted bread).
+
+9. Generate a recipe using "tomatoes, basil, mozzarella" for 4 people in 30 minutes, Italian cuisine, vegetarian.
+
+    - Aspect Tested: *Cuisine-specific recipe generation and cultural authenticity.* In snapshot 4, you will see that recipe and cooking steps  maintain authenticity to Italian cuisine.
+
+10. Generate a recipe using "salmon, quinoa, spinach, feta cheese, lemon, garlic, olive oil, dill" for 2 people in 60 minutes, Mediterranean cuisine, no dietary restrictions.
+
+    - Aspect Tested: *Complex ingredient integration and balanced recipe composition.* In snapshot 5, you will use a balanced (and complex) recipe is generated that utilizes all of the ingredients while satisifying time and cultural requirements.
 
 This "vibe check" now serves as a baseline, of sorts, to help understand what holes your application has.
 
@@ -57,7 +84,21 @@ This "vibe check" now serves as a baseline, of sorts, to help understand what ho
 #### ❓Question #1:
 
 What are some limitations of vibe checking as an evaluation tool?
-##### ✅ Answer:
+##### ✅ Answer: Vibe checking has several limitations as an evaluation tool:
+
+1. Limited Scope: It only tests a small subset of possible inputs and scenarios, potentially missing edge cases or failure modes that could occur in production.
+
+2. Subjective Assessment: The evaluation relies heavily on human judgment, which can be inconsistent and biased based on the evaluator's expectations and experience.
+
+3. No Quantitative Metrics: It doesn't provide measurable performance indicators or allow for systematic comparison across different versions or models.
+
+4. Surface-Level Testing: It focuses on obvious failures but may miss subtle issues like inconsistent formatting, minor logical errors, or gradual quality degradation.
+
+5. No Stress Testing: It doesn't test system behavior under high load, concurrent users, or with malformed inputs.
+
+6. Temporal Limitations: It's a snapshot in time and doesn't capture how the system performs over extended periods or with different data distributions.
+
+7. Limited Reproducibility: Results may vary between different evaluators or testing sessions, making it difficult to track improvements consistently.
 
 ### 🚧 Advanced Build (OPTIONAL):
 
@@ -71,9 +112,9 @@ Please make adjustments to your application that you believe will improve the vi
 
 ##### Results:
 1. _Comment here how the change(s) impacted the vibe check of your system_
-2. 
-3. 
-4. 
+2.
+3.
+4.
 5.
 
 
@@ -91,10 +132,10 @@ Follow these steps to prepare and submit your homework:
 2. **IMPORTANT:** Start Cursor from the `01_Prototyping Best Practices & Vibe Check` folder (you can also use the _File -> Open Folder_ menu option of an existing Cursor window)
 3. Create a branch of your `AIE8` repo to track your changes. Example command: `git checkout -b s01-assignment`
 4. Edit this `README.md` file (the one in your `AIE8/01_Prototyping Best Practices & Vibe Check` folder)
-5. Perform a "Vibe check" evaluation your AI-Engineering-Challenge system using the five questions provided above 
+5. Perform a "Vibe check" evaluation your AI-Engineering-Challenge system using the five questions provided above
 6. For each Activity question:
     - Define the “Aspect Tested”
-    - Comment on how your system performed on it. 
+    - Comment on how your system performed on it.
 7. Provide an answer to `❓Question #1:` after the `✅ Answer:` prompt
 8. Add, commit and push your modified `README.md` to your origin repository.
 
