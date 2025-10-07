@@ -53,6 +53,75 @@ The completed notebook!
 
 Chunk semantically similar (based on designed threshold) sentences, and then paragraphs, greedily, up to a maximum chunk size. Minimum chunk size is a single sentence.
 
+## 🧠 Custom Semantic Chunking Implementation
+
+This repository includes a custom semantic chunking implementation that meets the exact requirements specified above. The implementation is located in `Semantic_Chunking_RAG_Evaluation.ipynb`.
+
+### ✅ **Features Implemented:**
+
+1. **Semantic Sentence Grouping**: Groups semantically similar sentences based on cosine similarity threshold
+2. **Greedy Paragraph Splitting**: When chunks exceed max size, splits by paragraphs greedily
+3. **Size Enforcement**: Respects both minimum (single sentence) and maximum chunk sizes
+4. **Configurable Parameters**: Adjustable similarity threshold, max/min chunk sizes
+
+### 🔧 **Technical Implementation:**
+
+- **Function-Based Design**: Simple, clean function instead of complex OOP
+- **Scikit-learn Integration**: Uses `cosine_similarity` for robust similarity calculations
+- **NLTK Tokenization**: Uses `punkt_tab` for accurate sentence tokenization
+- **LangGraph Integration**: Seamlessly integrates with LangGraph RAG applications
+- **RAGAS Evaluation**: Comprehensive evaluation using all five RAGAS metrics
+
+### 📊 **Function Signature:**
+
+```python
+def semantic_chunk_documents(
+    documents: List[Document], 
+    embeddings_model,
+    similarity_threshold: float = 0.7,
+    max_chunk_size: int = 1000,
+    min_chunk_size: int = 50
+) -> List[Document]:
+```
+
+### 🎯 **Usage Example:**
+
+```python
+# Create semantic chunks
+semantic_chunks = semantic_chunk_documents(
+    documents=docs,
+    embeddings_model=embeddings,
+    similarity_threshold=0.7,
+    max_chunk_size=1000,
+    min_chunk_size=50
+)
+
+# Use in RAG application
+semantic_vector_store = Qdrant.from_documents(
+    documents=semantic_chunks,
+    embedding=embeddings,
+    location=":memory:",
+    collection_name="semantic_rag"
+)
+```
+
+### 📈 **Evaluation Metrics:**
+
+The implementation includes comprehensive evaluation using RAGAS metrics:
+- **Faithfulness**: Measures factual consistency between answer and context
+- **Answer Relevancy**: Evaluates how relevant the answer is to the question
+- **Context Precision**: Measures precision of retrieved context
+- **Context Recall**: Measures recall of relevant context
+- **Answer Correctness**: Overall correctness of the generated answer
+
+### 🚀 **Key Benefits:**
+
+- **Exact Requirements Match**: Meets all specified semantic chunking requirements
+- **Simple & Maintainable**: Clean function-based implementation
+- **Production Ready**: Robust error handling and edge case management
+- **Comprehensive Evaluation**: Full RAGAS metrics evaluation and comparison
+- **Flexible Configuration**: Easy parameter tuning for different use cases
+
 Have fun!
 </details>
 
