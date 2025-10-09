@@ -1,90 +1,110 @@
-<p align = "center" draggable=”false” ><img src="https://github.com/AI-Maker-Space/LLM-Dev-101/assets/37101144/d1343317-fa2f-41e1-8af1-1dbb18399719" 
-     width="200px"
-     height="auto"/>
-</p>
+# Advanced Retrieval with LangChain - Assignment
 
-## <h1 align="center" id="heading">Advanced Retrieval with LangChain</h1>
-| 📰 Session Sheet | ⏺️ Recording     | 🖼️ Slides        | 👨‍💻 Repo         | 📝 Homework      | 📁 Feedback       |
-|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
-| [Session 9: Advanced Retrieval Methods for RAG](https://www.notion.so/Session-9-Advanced-Retrieval-Methods-for-RAG-26acd547af3d80e09009c93c05f83932) |[Recording!](https://us02web.zoom.us/rec/share/FBAHsqyAqZJH2eCSM2ymIlfuC6Vbvn8PRj18os7JXRNGaQwNSODbr8p-l-lHdQ.UkfCFu5yBe4Uu1yN) (7Mvk=Zk^) | [Session 9 Slides](https://www.canva.com/design/DAG1JOanotQ/MdHirX2I1BLgpWTUKMg_yg/edit?utm_content=DAG1JOanotQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | You are here! | [Session 9 Assignment: Advanced Retrieval](https://github.com/AI-Maker-Space/AIE8/tree/main/09_Advanced_Retrieval) | [AIE8 Feedback 10/7](https://forms.gle/ty3AoLmWqBqg99rn8)
+## 📁 Project Structure
 
+```
+09_Advanced_Retrieval/
+├── Advanced_Retrieval_with_LangChain_Assignment.ipynb  # Main notebook
+├── retriever_evaluator/                                # Evaluation framework
+│   ├── __init__.py                                     # Package exports
+│   ├── simple.py                                       # Simple evaluation functions
+│   └── README.md                                       # Module documentation
+├── USAGE.md                                            # Quick start guide
+├── data/                                               # Your data files
+└── pyproject.toml                                      # Dependencies
+```
 
-### Steps to Run:
+## 🎯 Quick Start - Evaluating Retrievers
 
-1. Run `uv sync`
-2. Run through the notebook. 
+### 1. Setup LangSmith (for cost/latency tracking)
 
-# Build 🏗️
+```python
+import os
+import getpass
 
-Run the notebook and complete the following:
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_PROJECT"] = "retriever-evaluation"
+os.environ["LANGCHAIN_API_KEY"] = getpass.getpass("LangSmith API Key:")
+```
 
-- 🤝 Breakout Room Part #1
-  - Task 1: Getting Dependencies!
-  - Task 2: Data Collection and Preparation
-  - Task 3: Setting Up QDrant!
-  - Task 4-10: Retrieval Strategies
-    - Naive RAG Chain
-    - Best-Matching 25 (BM255)
-    - contextual Compression (Using Reranking)
-    - Multi-Query
-    - Parent Document
-    - Ensemble
-    - Semantic Chunking
-- 🤝 Breakout Room Part #2
-  - Activity: Evaluate with Ragas
+### 2. Evaluate a Single Retriever
 
+```python
+from retriever_evaluator import evaluate_retriever
+from ragas.metrics import context_recall, context_precision
 
-<details>
-<summary>🚧 Advanced Build 🚧 (OPTIONAL - <i>open this section for the requirements</i>)</summary>
+result = evaluate_retriever(
+    retriever=naive_retriever,  # Your pre-built retriever
+    testset=testset,            # RAGAS testset
+    metrics=[context_recall, context_precision],
+    name="Naive Retriever"
+)
+```
 
->NOTE: This can be done in place of the Main Assignment
+### 3. Compare Multiple Retrievers
 
-Implement [RAG-Fusion](https://arxiv.org/pdf/2402.03367) using the LangChain ecosystem.
+```python
+from retriever_evaluator import compare_retrievers
+from ragas.metrics import context_recall, context_precision, context_entity_recall
 
-Have fun!
-</details>
+results_df = compare_retrievers([
+    (naive_retriever, [context_recall, context_precision], "Naive", "Baseline"),
+    (bm25_retriever, [context_recall, context_entity_recall], "BM25", "Keyword"),
+    (compression_retriever, [context_precision], "Rerank", "Cohere"),
+    (multi_query_retriever, [context_recall, context_entity_recall], "Multi-Query", "Expansion"),
+    (ensemble_retriever, [context_recall, context_precision, context_entity_recall], "Ensemble", "Combined"),
+], testset)
+```
 
-# Ship 🚢
+## 📊 What You Get
 
-- The completed notebook. 
-- 5min. Loom Video
+### Quality Metrics (RAGAS)
+- `context_recall`: Are all relevant docs retrieved?
+- `context_precision`: Are retrieved docs well-ranked?
+- `context_entity_recall`: Are specific entities found?
 
-# Share 🚀
-- Walk through your notebook and explain what you've completed in the Loom video
-- Make a social media post about your final application and tag @AIMakerspace
-- Share 3 lessons learned
-- Share 3 lessons not learned
+### Performance Metrics (LangSmith - Automatic!)
+- Total cost and cost per query
+- Average, min, max, P50, P95 latency
+- Total tokens used
 
-# Submitting Your Homework
+## 📖 Documentation
 
-### Main Homework Assignment
+- **USAGE.md** - Complete usage guide with examples
+- **retriever_evaluator/README.md** - Module documentation
+- **Advanced_Retrieval_with_LangChain_Assignment.ipynb** - Main notebook
 
-Follow these steps to prepare and submit your homework assignment:
-1. Create a branch of your `AIE8` repo to track your changes. Example command: `git checkout -b s09-assignment`
-2. Respond to the questions in the `Evaluating_RAG_with_Ragas_(2025)_AI_Makerspace.ipynb` notebook by editing the markdown cells with the questions then enter your responses
-3. Complete the activity in the notebook
-4. Commit, and push your completed notebook to your `origin` repository. _NOTE: Do not merge it into your main branch._
-5. Record a Loom video reviewing the content of your completed notebook
-6. Make sure to include all of the following on your Homework Submission Form:
-    + The GitHub URL to the `Advanced_Retrieval_with_LangChain_Assignment.ipynb` notebook _on your assignment branch (not main)_
-    + The URL to your Loom Video
-    + Your Three lessons learned/not yet learned
-    + The URLs to any social media posts (LinkedIn, X, Discord, etc.) ⬅️ _easy Extra Credit points!_
+## 🔑 Key Features
 
+- ✅ **Simple**: Just 2 functions - `evaluate_retriever()` and `compare_retrievers()`
+- ✅ **Flexible**: Pass any pre-built retriever (LCEL chains, LangChain retrievers, etc.)
+- ✅ **Complete**: Quality (RAGAS) + Cost + Latency in one call
+- ✅ **Direct**: Results printed automatically
 
-### OPTIONAL: 🚧 Advanced Build Assignment 🚧
-<details>
-  <summary>(<i>Open this section for the submission instructions.</i>)</summary>
+## 💡 Suggested Metrics by Retriever Type
 
-Follow these steps to prepare and submit your homework assignment:
-1. Create a branch of your `AIE8` repo to track your changes. Example command: `git checkout -b s09-assignment`
-2. Create a notebook that implements RAG-Fusion using the LangSmith ecosystem
-3. Commit, and push your completed notebook to your `origin` repository. _NOTE: Do not merge it into your main branch._
-4. Record a Loom video reviewing the content of your completed notebook.
-5. Make sure to include all of the following on your Homework Submission Form:
-    + The GitHub URL to the notebook you created for the Advanced Build Assignment _on your assignment branch_
-    + The URL to your Loom Video
-    + Your Three lessons learned/not yet learned
-    + The URLs to any social media posts (LinkedIn, X, Discord, etc.) ⬅️ _easy Extra Credit points!_
+| Retriever | Metrics | Why? |
+|-----------|---------|------|
+| Naive | `context_recall`, `context_precision` | Baseline semantic performance |
+| BM25 | `context_recall`, `context_entity_recall` | Excels at keyword/entity matching |
+| Compression | `context_precision` | Reranking optimizes precision |
+| Multi-Query | `context_recall`, `context_entity_recall` | Query expansion improves recall |
+| Parent Document | `context_recall`, `context_precision` | Completeness vs noise trade-off |
+| Ensemble | All three | Comprehensive evaluation |
 
-</details>
+## 🚀 Assignment Goals
+
+1. ✅ Create a "golden dataset" using Synthetic Data Generation (RAGAS)
+2. ✅ Evaluate each retriever with appropriate RAGAS metrics
+3. ✅ Track cost and latency using LangSmith
+4. ✅ Compare retrievers and analyze results
+5. ✅ Write analysis considering cost, latency, and performance
+
+## 📝 Example Usage
+
+See `USAGE.md` for complete examples and best practices.
+
+---
+
+**Version**: 2.0.0 (Simplified)
+**Framework**: Simple function-based API for maximum flexibility
