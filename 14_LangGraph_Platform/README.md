@@ -39,7 +39,47 @@ Run the repository and complete the following:
 Compare the `agent` and `agent_helpful` assistants defined in `langgraph.json`. Where does the helpfulness evaluator fit in the graph, and under what condition should execution route back to the agent vs. terminate?
 
 ##### ✅ Answer:
-_(enter answer here)_
+
+The basic difference between the two assistants in `langgraph.json` are as follows: 
+
+
+  | Assistant       | Graph                 | Description                                           |
+  |--------------- |------------------------|-------------------------------------------------------|
+  | `agent`         | `simple_agent`          | Basic agent with conditional tool-calling             |
+  | `agent_helpful` | `agent_with_helpfulness` | Agent with helpfulness evaluation and loop capability |
+
+The graph structure of the two agents are as follows:
+
+- `agent` (`simple_agent`):
+
+```
+START → agent → (conditional routing)
+                 ├─ has tool_calls? → action → agent (loop)
+                 └─ no tool_calls? → END
+```
+
+- `agent_helpful` (`gent_with_helpfulness`)
+
+```
+START → agent → (conditional routing)
+                 ├─ has tool_calls? → action → agent (loop)
+                 └─ no tool_calls? → helpfulness → (conditional routing)
+                                                    ├─ helpful? → END
+                                                    └─ not helpful? → agent (loop back)
+```
+
+The helpfulness evaluator is positioned after the agent produces a final response (i.e., when there are no tool calls). This happens in the flow:
+
+  1. Agent produces response
+  2. Route decision:
+    - If response has tool_calls → go to action node
+    - If no tool_calls → go to helpfulness node
+  3. Helpfulness evaluation:
+    - Compares initial query with final response
+    - Uses GPT-4.1-mini to evaluate if response is helpful ('Y' or 'N')
+    - When message count exceeds 10, terminate (safety limit to prevent infinite loops)
+
+ This is a more sophisticated pattern than the simple agent, which terminates immediately when no tool calls are needed.
 
 #### 🏗️ Activity #1 Debugging A Graph
 
@@ -50,9 +90,29 @@ Select the `agent_with_helpfulness` and set one or more interrupts (at least one
 What are your thoughts on when you would use a Before interrupt vs. an After interrupt?
 
 ##### ✅ Answer:
-_(enter answer here)_
 
+Based on the experimentation with the graphs in this assignment, here are my views on when to use `Before interrupt` v/s `After Interrupt`
 
+`Before Interrupt`: use when you want to:
+  - Prevent execution until human approval is given
+  - Modify inputs before a node runs
+  - Validate that conditions are met before proceeding
+  - Gate critical operations like API calls, database writes, or expensive operations
+
+  Example scenarios:
+  - Approval workflows: "Should I send this email/make this purchase?"
+  - Safety checks: "This will delete 1000 records, continue?"
+  - Input validation: "Please review/edit these parameters before I call the API"
+  - Budget gates: "This operation will cost $50, proceed?"
+
+  `After Interrupt`: Use when you want to:
+  - Review results before continuing
+  - Give users a chance to correct or retry
+  - Collect feedback on what was just done
+  - Branch based on human evaluation of outputs
+  - Let the action complete but pause the workflow
+
+Before interrupts are more conservative (fail-safe), while after interrupts are more efficient (optimistic execution).
 
 <details>
 <summary>🚧 Advanced Build 🚧 (OPTIONAL - <i>open this section for the requirements</i>)</summary>
