@@ -46,6 +46,10 @@ class CacheBackedEmbeddings:
             namespace=safe_namespace,
             batch_size=batch_size
         )
+
+        # so we can have our vectorstore rebuilt everytime (as client is in memory) but
+        # we can just read the cached embeddings from disk instead of callng OpenAI API 
+        # everytime to rebuild the vectorstore. 
     
     def get_embeddings(self):
         """Get the cached embeddings instance."""
