@@ -83,11 +83,43 @@ Build a LangGraph Graph to "use" your application.
 
 Do this by creating a Simple Agent that can make API calls to the 🤖Agent Node above through the A2A protocol. 
 
+##### ✅ Answer: 
+
+Please check the notebook: [activity_1_langgraph_a2a_client.ipynb](activity_1_langgraph_a2a_client.ipynb).
+
 ### ❓ Question #1:
 
 What are the core components of an `AgentCard`?
 
 ##### ✅ Answer:
+
+
+  An AgentCard is a machine-readable description of an agent's capabilities (similar to an OpenAPI specification). Based on the implementation in app/__main__.py:72-81, the core components are:
+
+  Required Fields:
+
+  1. name: A human-readable identifier for the agent (e.g., "General Purpose Agent")
+  2. description: A clear description of what the agent does and its purpose
+  3. url: The base URL where the agent service is hosted
+  4. version: The version of the agent (e.g., "1.0.0")
+  5. default_input_modes: The content types the agent can accept as input
+  6. default_output_modes: The content types the agent can produce as output
+  7. capabilities: An AgentCapabilities object that defines high-level features:
+    - streaming: Whether the agent supports streaming responses
+    - push_notifications: Whether the agent supports push notifications
+  8. skills: A list of AgentSkill objects, where each skill contains:
+    - id: Unique identifier for the skill
+    - name: Display name for the skill
+    - description: What the skill does
+    - tags: Keywords for categorizing the skill
+    - examples: Sample queries that demonstrate the skill
+
+  Two Types of AgentCards:
+
+  - Public AgentCard (/.well-known/agent.card.json): Publicly accessible without authentication
+  - Extended AgentCard (/agent.card.json): May require authentication and contain additional capabilities
+
+  The AgentCard enables agent discovery and allows clients to understand what an agent can do before interacting with it, forming the foundation of the A2A (Agent-to-Agent) Protocol.
 
 <br />
 
@@ -97,7 +129,21 @@ Why is A2A (and other such protocols) important in your own words?
 
 ##### ✅ Answer:
 
-<br /><br />
+
+  In essence, A2A is to AI agents what HTTP was to web services - a foundational protocol that enables a thriving, interoperable ecosystem. A2A and similar agent communication protocols are crucial for several reasons as follows:
+
+  1. Standardization & Interoperability: Just as HTTP/REST standardized web communication, A2A creates a common language for AI agents to communicate. This means agents built by different teams,
+  using different frameworks (LangGraph, CrewAI, etc.), can seamlessly work together without custom integration code.
+  2. Agent Composability: A2A enables building complex systems by chaining specialized agents together. Instead of creating one monolithic agent that does everything, you can compose multiple
+  focused agents - one for research, one for data analysis, one for writing - each excelling at their specific task.
+  3. Discoverability: Through AgentCards, agents can advertise their capabilities, skills, and requirements (similar to OpenAPI specs for APIs). This allows agents to discover and understand what
+   other agents can do before invoking them, enabling dynamic agent orchestration.
+  4. Quality Control & Evaluation: The protocol supports built-in evaluation mechanisms (like the helpfulness loop shown in the diagram). Agents can assess whether responses meet quality
+  standards and request refinements, leading to more reliable multi-agent systems.
+  5. Ecosystem Development: Standardized protocols enable an ecosystem where specialized agents can be developed, shared, and reused across different applications - similar to how microservices
+  revolutionized software architecture.
+  6. Future-Proofing: As AI agents become more prevalent, having standard communication protocols prevents vendor lock-in and ensures systems can evolve without requiring complete rewrites when
+  integrating new agent capabilities.
 
 <details>
 <summary>🚧 Advanced Build 🚧 (OPTIONAL - <i>open this section for the requirements</i>)</summary>
